@@ -1,0 +1,38 @@
+/openmessages
+*.db
+session.json
+.vercel/
+macos/build/
+macos/OpenMessages/.build/
+.vercel
+.env*.local
+.build/
+node_modules/
+playwright-report/
+test-results/
+/OpenMessage.app/
+/OpenMessage.pkg
+*.dSYM.zip
+fastlane/report.xml
+site/out/
+site/.claude/
+site/bun.lock
+
+# Local Go workspace overrides — use a local checkout of dependencies
+# without committing it. CI/release builds use the versions in go.mod.
+go.work
+go.work.sum
+
+# Browser automation captures from local dev sessions
+.playwright-cli/
+output/
+
+# Top-level bun lockfile from running e2e tests at the repo root
+/bun.lock
+
+# Prebuilt binaries (built from source; don't commit)
+/openmessage-demo
+/genviz
+/openmessage
+/om-bin
+/om-test

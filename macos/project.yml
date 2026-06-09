@@ -1,0 +1,52 @@
+name: OpenMessage
+options:
+  bundleIdPrefix: com.openmessage
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "0.2.9"
+    CURRENT_PROJECT_VERSION: "18"
+    SWIFT_VERSION: "6.0"
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    DEVELOPMENT_TEAM: ""
+    ENABLE_HARDENED_RUNTIME: YES
+
+targets:
+  OpenMessage:
+    type: application
+    platform: macOS
+    sources:
+      - path: OpenMessage/Sources
+        excludes:
+          - "Info.plist"
+    settings:
+      base:
+        INFOPLIST_FILE: OpenMessage/Sources/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.openmessage.app
+        CODE_SIGN_ENTITLEMENTS: OpenMessage.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    dependencies:
+      - target: MessagesWidget
+        embed: true
+
+  MessagesWidget:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Widget
+        excludes:
+          - "Info.plist"
+      - path: OpenMessage/Sources/InboxShared.swift
+      - path: OpenMessage/Sources/InboxBackend.swift
+    settings:
+      base:
+        INFOPLIST_FILE: Widget/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.openmessage.app.widget
+        CODE_SIGN_ENTITLEMENTS: Widget/Widget.entitlements
+        # WidgetKit's completion-based TimelineProvider trips Swift 6's
+        # sending-closure checks; the Swift 5 language mode is the standard fix.
+        SWIFT_VERSION: "5.0"

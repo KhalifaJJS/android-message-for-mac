@@ -1,0 +1,486 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		029B66E1C4A625FAE58108FE /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96FA2E7E55081029A7B3A6A /* NotificationManager.swift */; };
+		0B15318D058EDD0863B9D0EB /* InboxMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809060358009968C1481C0FC /* InboxMonitor.swift */; };
+		12BF3D7656EDC41E69EFCE23 /* MessagesWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6CFDD66066A40F7F5BA98B4A /* MessagesWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3831ED9FFE8D7CBF1A4722A1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81E465BE4078AA5D177633E /* ContentView.swift */; };
+		4618A4DA70471BD13735BB3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0D52422440786C027292160 /* Assets.xcassets */; };
+		4C95AA00CEC0EC7432976AEA /* MessagesWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125131384A644D8A43E1A22C /* MessagesWidget.swift */; };
+		4E33C61C03F7DEE247467BCD /* InboxShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0DF1CE4636E9E0E5AD294 /* InboxShared.swift */; };
+		822F44E22665CF13EA5F6A65 /* PairingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB61E5EA085EC5993F8B705 /* PairingView.swift */; };
+		8A303C26402CD717F298C08E /* OpenMessageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D045D9182E1BA187E5CE1D3E /* OpenMessageApp.swift */; };
+		9FB1347E0332CC5C01A00D82 /* ContactsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F676F80556C581FB59F7602 /* ContactsManager.swift */; };
+		A0E8B54EEFDE31528F0DFA05 /* BackendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC5DE7AE9799041CC73E3F3 /* BackendManager.swift */; };
+		A72C1A76D7C886986FC74979 /* InboxShared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0DF1CE4636E9E0E5AD294 /* InboxShared.swift */; };
+		C82C997B7456ABF1B1ECFF5A /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718CA366F4EABF9DA3C8CE42 /* MenuBarView.swift */; };
+		D2F703527DD516BB8AB38996 /* InboxBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBABB694E61D1D0B244466DA /* InboxBackend.swift */; };
+		F0FD51C947C96A3209C37A70 /* InboxBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBABB694E61D1D0B244466DA /* InboxBackend.swift */; };
+		F56A9D8DDA3CE3665089CB62 /* GoogleSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C460AF4156EE4C72093E394 /* GoogleSignInView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8A197ED3B0CD82A780BDC143 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C95045B9F82485E6EB2102A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 147A78ED9676F99E9C8E896A;
+			remoteInfo = MessagesWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1C3DFE4578DF374FB51BADB0 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				12BF3D7656EDC41E69EFCE23 /* MessagesWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		125131384A644D8A43E1A22C /* MessagesWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesWidget.swift; sourceTree = "<group>"; };
+		2F676F80556C581FB59F7602 /* ContactsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsManager.swift; sourceTree = "<group>"; };
+		3EC5DE7AE9799041CC73E3F3 /* BackendManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendManager.swift; sourceTree = "<group>"; };
+		5C460AF4156EE4C72093E394 /* GoogleSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInView.swift; sourceTree = "<group>"; };
+		6CFDD66066A40F7F5BA98B4A /* MessagesWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MessagesWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		718CA366F4EABF9DA3C8CE42 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		809060358009968C1481C0FC /* InboxMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxMonitor.swift; sourceTree = "<group>"; };
+		8CF0DF1CE4636E9E0E5AD294 /* InboxShared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxShared.swift; sourceTree = "<group>"; };
+		8FB61E5EA085EC5993F8B705 /* PairingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingView.swift; sourceTree = "<group>"; };
+		A7839F259A32CD04717541BA /* Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widget.entitlements; sourceTree = "<group>"; };
+		ACCBA96A5C68DF0C227F54A4 /* OpenMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D045D9182E1BA187E5CE1D3E /* OpenMessageApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenMessageApp.swift; sourceTree = "<group>"; };
+		D0D52422440786C027292160 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DBABB694E61D1D0B244466DA /* InboxBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxBackend.swift; sourceTree = "<group>"; };
+		E81E465BE4078AA5D177633E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		E96FA2E7E55081029A7B3A6A /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		282EF5B364B52C6D7CAA432A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CFDD66066A40F7F5BA98B4A /* MessagesWidget.appex */,
+				ACCBA96A5C68DF0C227F54A4 /* OpenMessage.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		91E0E73975DAC33FB5F1B62E /* OpenMessage */ = {
+			isa = PBXGroup;
+			children = (
+				BFF8F6532D8B3FCBD1743E1E /* Sources */,
+			);
+			path = OpenMessage;
+			sourceTree = "<group>";
+		};
+		94E122FC8EE74B0BA2AB5BCE = {
+			isa = PBXGroup;
+			children = (
+				91E0E73975DAC33FB5F1B62E /* OpenMessage */,
+				9D2693FFD964B9A0C449B011 /* Widget */,
+				282EF5B364B52C6D7CAA432A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9D2693FFD964B9A0C449B011 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				125131384A644D8A43E1A22C /* MessagesWidget.swift */,
+				A7839F259A32CD04717541BA /* Widget.entitlements */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		BFF8F6532D8B3FCBD1743E1E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D0D52422440786C027292160 /* Assets.xcassets */,
+				3EC5DE7AE9799041CC73E3F3 /* BackendManager.swift */,
+				2F676F80556C581FB59F7602 /* ContactsManager.swift */,
+				E81E465BE4078AA5D177633E /* ContentView.swift */,
+				5C460AF4156EE4C72093E394 /* GoogleSignInView.swift */,
+				DBABB694E61D1D0B244466DA /* InboxBackend.swift */,
+				809060358009968C1481C0FC /* InboxMonitor.swift */,
+				8CF0DF1CE4636E9E0E5AD294 /* InboxShared.swift */,
+				718CA366F4EABF9DA3C8CE42 /* MenuBarView.swift */,
+				E96FA2E7E55081029A7B3A6A /* NotificationManager.swift */,
+				D045D9182E1BA187E5CE1D3E /* OpenMessageApp.swift */,
+				8FB61E5EA085EC5993F8B705 /* PairingView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		147A78ED9676F99E9C8E896A /* MessagesWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4A73DBF5113C120066CD017E /* Build configuration list for PBXNativeTarget "MessagesWidget" */;
+			buildPhases = (
+				011BCDFDFE3341F76A754C89 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MessagesWidget;
+			packageProductDependencies = (
+			);
+			productName = MessagesWidget;
+			productReference = 6CFDD66066A40F7F5BA98B4A /* MessagesWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		FE430327E133587229AAEFA3 /* OpenMessage */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEA1F0912BBE5FEBFACAE369 /* Build configuration list for PBXNativeTarget "OpenMessage" */;
+			buildPhases = (
+				93D8E0E6ADAD949571D9965C /* Sources */,
+				E63E9FF989E0B8AD6FAB5F64 /* Resources */,
+				1C3DFE4578DF374FB51BADB0 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				292A65CC2756B612EB6D3ABC /* PBXTargetDependency */,
+			);
+			name = OpenMessage;
+			packageProductDependencies = (
+			);
+			productName = OpenMessage;
+			productReference = ACCBA96A5C68DF0C227F54A4 /* OpenMessage.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C95045B9F82485E6EB2102A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					147A78ED9676F99E9C8E896A = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+					FE430327E133587229AAEFA3 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 3002FF59F01F62273791BABF /* Build configuration list for PBXProject "OpenMessage" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 94E122FC8EE74B0BA2AB5BCE;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 282EF5B364B52C6D7CAA432A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				147A78ED9676F99E9C8E896A /* MessagesWidget */,
+				FE430327E133587229AAEFA3 /* OpenMessage */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E63E9FF989E0B8AD6FAB5F64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4618A4DA70471BD13735BB3D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		011BCDFDFE3341F76A754C89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0FD51C947C96A3209C37A70 /* InboxBackend.swift in Sources */,
+				A72C1A76D7C886986FC74979 /* InboxShared.swift in Sources */,
+				4C95AA00CEC0EC7432976AEA /* MessagesWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93D8E0E6ADAD949571D9965C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0E8B54EEFDE31528F0DFA05 /* BackendManager.swift in Sources */,
+				9FB1347E0332CC5C01A00D82 /* ContactsManager.swift in Sources */,
+				3831ED9FFE8D7CBF1A4722A1 /* ContentView.swift in Sources */,
+				F56A9D8DDA3CE3665089CB62 /* GoogleSignInView.swift in Sources */,
+				D2F703527DD516BB8AB38996 /* InboxBackend.swift in Sources */,
+				0B15318D058EDD0863B9D0EB /* InboxMonitor.swift in Sources */,
+				4E33C61C03F7DEE247467BCD /* InboxShared.swift in Sources */,
+				C82C997B7456ABF1B1ECFF5A /* MenuBarView.swift in Sources */,
+				029B66E1C4A625FAE58108FE /* NotificationManager.swift in Sources */,
+				8A303C26402CD717F298C08E /* OpenMessageApp.swift in Sources */,
+				822F44E22665CF13EA5F6A65 /* PairingView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		292A65CC2756B612EB6D3ABC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 147A78ED9676F99E9C8E896A /* MessagesWidget */;
+			targetProxy = 8A197ED3B0CD82A780BDC143 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3FFAB9022A8CB696E3C018E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = OpenMessage.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = OpenMessage/Sources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmessage.app;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		78732D7D2E26076BBA3D56EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmessage.app.widget;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		887C80C23864175B0C2C5302 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 18;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.2.9;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		97264466751EDB53500EFE5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 18;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.2.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		E841C79F79D671152F75E81D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Widget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmessage.app.widget;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F17FE8136AC98D1CEEE07D5B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = OpenMessage.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = OpenMessage/Sources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.openmessage.app;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3002FF59F01F62273791BABF /* Build configuration list for PBXProject "OpenMessage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				887C80C23864175B0C2C5302 /* Debug */,
+				97264466751EDB53500EFE5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4A73DBF5113C120066CD017E /* Build configuration list for PBXNativeTarget "MessagesWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E841C79F79D671152F75E81D /* Debug */,
+				78732D7D2E26076BBA3D56EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CEA1F0912BBE5FEBFACAE369 /* Build configuration list for PBXNativeTarget "OpenMessage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F17FE8136AC98D1CEEE07D5B /* Debug */,
+				3FFAB9022A8CB696E3C018E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9C95045B9F82485E6EB2102A /* Project object */;
+}

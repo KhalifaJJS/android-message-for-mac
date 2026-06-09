@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- App extensions must be sandboxed. -->
+    <key>com.apple.security.app-sandbox</key>
+    <true/>
+    <!-- Needed to reach the local backend at 127.0.0.1:7007. -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+    <!-- Shared container for the snapshot the app writes (used as an offline
+         fallback when the backend isn't reachable). -->
+    <key>com.apple.security.application-groups</key>
+    <array>
+        <string>group.com.openmessage.app</string>
+    </array>
+</dict>
+</plist>
