@@ -7367,6 +7367,15 @@ body::after {
 
   async function loadMessages(convoId, options = {}) {
     if (!convoId) return;
+    // A pending (not-yet-created) conversation has no server messages — show an
+    // empty thread; the room is created when the first message is sent.
+    if (String(convoId).startsWith('pending:')) {
+      loadedMessages = [];
+      hasOlderMessages = false;
+      renderLoadedMessages({});
+      $messagesArea.removeAttribute('aria-busy');
+      return;
+    }
 
     const older = !!options.older;
     const reset = !!options.reset;
@@ -7546,6 +7555,32 @@ body::after {
     }
     const sendConvoId = activeConvoId;
     const sendConversation = activeConversation;
+
+    // New (pending) conversation: create the Google Messages thread now, on the
+    // first send, so an unsent new chat never leaves an empty room on the phone.
+    if (sendConvoId && String(sendConvoId).startsWith('pending:')) {
+      const newText = $composeInput.value.trim();
+      if (!newText) return;
+      const phone = sendConvoId.slice('pending:'.length);
+      $sendBtn.disabled = true;
+      try {
+        const res = await postJSON('/api/send', { to_number: phone, message: newText });
+        $composeInput.value = '';
+        $composeInput.dispatchEvent(new Event('input', { bubbles: true }));
+        const realId = res && res.conversation_id;
+        await loadConversations();
+        let convo = realId && conversations.find(c => c.ConversationID === realId);
+        if (!convo && realId) convo = { ConversationID: realId, Name: phone, SourcePlatform: 'sms' };
+        if (convo) await revealAndSelectConversation(convo);
+      } catch (err) {
+        showThreadFeedback(userFacingErrorMessage(err, 'send') || '전송 실패');
+        $composeInput.dispatchEvent(new Event('input', { bubbles: true }));
+      } finally {
+        $sendBtn.disabled = false;
+      }
+      return;
+    }
+
     const canSendText = conversationSupportsOutbound(sendConversation);
     const canSendMedia = conversationSupportsMediaOutbound(sendConversation);
     const activePlatform = sourcePlatformOf(sendConversation);
@@ -9224,49 +9259,11 @@ body::after {
       return;
     }
 
-    $newMsgGo.disabled = true;
-    $newMsgGo.innerHTML = '<span class="spinner" aria-hidden="true"></span>Connecting...';
-    $newMsgError.style.display = 'none';
-
-    // Hard timeout so the button never hangs forever if the backend stalls.
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
-
-    try {
-      const resp = await fetch(API + '/api/new-conversation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone_number: phone }),
-        signal: controller.signal,
-      });
-      if (!resp.ok) {
-        throw new Error(await responseError(resp));
-      }
-      const data = await resp.json();
-      closeNewMsg();
-      // Refresh conversation list and select the new one
-      await loadConversations();
-      const convo = conversations.find(c => c.ConversationID === data.conversation_id);
-      if (convo) {
-        revealAndSelectConversation(convo);
-      } else {
-        // Conversation might not be in the list yet, create a minimal one
-        revealAndSelectConversation({
-          ConversationID: data.conversation_id,
-          Name: data.name || phone,
-        });
-      }
-    } catch (err) {
-      const isAbort = err && err.name === 'AbortError';
-      $newMsgError.textContent = isAbort
-        ? 'Request timed out. Check that Google Messages is paired and try again.'
-        : (userFacingErrorMessage(err, 'start-conversation') || 'Failed to start conversation');
-      $newMsgError.style.display = 'block';
-      $newMsgGo.disabled = false;
-      $newMsgGo.textContent = 'Start conversation';
-    } finally {
-      clearTimeout(timeoutId);
-    }
+    // Open a PENDING conversation (no server room yet). The real Google Messages
+    // thread is created only when the first message is sent (POST /api/send with
+    // to_number), so starting a new chat never leaves an empty room on the phone.
+    closeNewMsg();
+    revealAndSelectConversation({ ConversationID: 'pending:' + phone, Name: phone, SourcePlatform: 'sms' });
   }
 
   $newMsgBtn.addEventListener('click', openNewMsg);

@@ -72,11 +72,11 @@ type APIOptions struct {
 	DownloadWhatsAppMedia func(msg *db.Message) ([]byte, string, error)
 	DownloadSignalMedia   func(msg *db.Message) ([]byte, string, error)
 	StartDeepBackfill     func() bool
-	BackfillStatus        func() any         // returns a JSON-serializable backfill progress snapshot
-	BackfillPhone         func(string) error // targeted backfill for a single phone number
+	BackfillStatus        func() any // returns a JSON-serializable backfill progress snapshot
 	GetSIMs               func() []map[string]any            // dual-SIM list captured from settings
 	SelectSIM             func(int) *gmproto.SIMPayload      // SIMPayload for a chosen SIM number
 	SyncContacts          func() error                       // sync Google contact names + photos
+	MarkDeleted           func(string)                       // suppress re-sync of a user-deleted conversation
 }
 
 type SearchResult struct {
@@ -280,7 +280,6 @@ func APIHandlerWithOptions(store *db.Store, cli *client.Client, logger zerolog.L
 			"backfill": map[string]bool{
 				"status":   opts.BackfillStatus != nil,
 				"deep":     opts.StartDeepBackfill != nil,
-				"targeted": opts.BackfillPhone != nil,
 			},
 			"link_preview": map[string]bool{
 				"fetch": opts.FetchLinkPreview != nil,
@@ -520,16 +519,28 @@ func APIHandlerWithOptions(store *db.Store, cli *client.Client, logger zerolog.L
 				httpError(w, "method not allowed", 405)
 				return
 			}
-			// Delete on the phone (Google Messages) first, then locally. The
-			// phone-side delete is what clears the empty threads created earlier.
+			// Suppress re-sync FIRST, so a conversation/message event that races
+			// the server-side delete (which propagates with a short delay) can't
+			// resurrect the thread — that was the "delete sometimes doesn't stick
+			// on the first try" bug.
+			if opts.MarkDeleted != nil {
+				opts.MarkDeleted(convID)
+			}
+			// Delete on the phone (Google Messages), retrying briefly since the
+			// first call can fail transiently right after activity on the thread.
 			serverDeleted := false
 			var serverErr string
 			if cli := getClient(); cli != nil {
 				phone := otherParticipantPhone(store, convID)
-				if err := cli.GM.DeleteConversation(convID, phone); err != nil {
-					serverErr = googleAPIErrorMessage("delete conversation", err)
-				} else {
+				for attempt := 0; attempt < 3; attempt++ {
+					if err := cli.GM.DeleteConversation(convID, phone); err != nil {
+						serverErr = googleAPIErrorMessage("delete conversation", err)
+						time.Sleep(400 * time.Millisecond)
+						continue
+					}
 					serverDeleted = true
+					serverErr = ""
+					break
 				}
 			} else {
 				serverErr = "not connected — deleted locally only"
@@ -763,14 +774,56 @@ func APIHandlerWithOptions(store *db.Store, cli *client.Client, logger zerolog.L
 			ConversationID string `json:"conversation_id"`
 			Message        string `json:"message"`
 			ReplyToID      string `json:"reply_to_id,omitempty"`
+			// ToNumber starts a NEW conversation: the thread is created on Google
+			// Messages only here, at send time, so starting a new chat never
+			// leaves an empty room on the phone.
+			ToNumber string `json:"to_number,omitempty"`
 		}
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			httpError(w, "invalid JSON: "+err.Error(), 400)
 			return
 		}
-		if req.ConversationID == "" || req.Message == "" {
-			httpError(w, "conversation_id and message are required", 400)
+		if req.Message == "" || (req.ConversationID == "" && req.ToNumber == "") {
+			httpError(w, "message and (conversation_id or to_number) are required", 400)
 			return
+		}
+		// Create-on-send: resolve a new conversation for to_number now.
+		if req.ConversationID == "" && req.ToNumber != "" {
+			cli := getClient()
+			if cli == nil {
+				httpError(w, app.ErrNotConnected, 503)
+				return
+			}
+			cr, err := cli.GM.GetOrCreateConversation(&gmproto.GetOrCreateConversationRequest{
+				Numbers: app.NewContactNumbers([]string{req.ToNumber}),
+			})
+			if err != nil {
+				httpError(w, googleAPIErrorMessage("start conversation", err), 502)
+				return
+			}
+			conv := cr.GetConversation()
+			if conv == nil || conv.GetConversationID() == "" {
+				httpError(w, "no conversation returned", 502)
+				return
+			}
+			req.ConversationID = conv.GetConversationID()
+			// Store a minimal row so it shows in the sidebar immediately.
+			name := req.ToNumber
+			for _, p := range conv.GetParticipants() {
+				if !p.GetIsMe() {
+					if fn := p.GetFullName(); fn != "" {
+						name = fn
+					} else if num := p.GetFormattedNumber(); num != "" {
+						name = num
+					}
+				}
+			}
+			_ = store.UpsertConversation(&db.Conversation{
+				ConversationID: req.ConversationID,
+				Name:           name,
+				LastMessageTS:  time.Now().UnixMilli(),
+				SourcePlatform: "sms",
+			})
 		}
 		if isWhatsAppConversation(req.ConversationID) {
 			msg, err := sendWhatsAppText(req.ConversationID, req.Message, req.ReplyToID, "")
@@ -896,8 +949,9 @@ func APIHandlerWithOptions(store *db.Store, cli *client.Client, logger zerolog.L
 		publishMessages(req.ConversationID)
 		publishConversations()
 		writeJSON(w, map[string]any{
-			"status":  resp.GetStatus().String(),
-			"success": success,
+			"status":          resp.GetStatus().String(),
+			"success":         success,
+			"conversation_id": req.ConversationID,
 		})
 	})
 
@@ -1214,68 +1268,10 @@ func APIHandlerWithOptions(store *db.Store, cli *client.Client, logger zerolog.L
 		})
 	})
 
-	mux.HandleFunc("/api/new-conversation", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			httpError(w, "method not allowed", 405)
-			return
-		}
-		var req struct {
-			PhoneNumber string `json:"phone_number"`
-		}
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			httpError(w, "invalid JSON: "+err.Error(), 400)
-			return
-		}
-		if req.PhoneNumber == "" {
-			httpError(w, "phone_number is required", 400)
-			return
-		}
-		cli := getClient()
-		if cli == nil {
-			httpError(w, app.ErrNotConnected, 503)
-			return
-		}
-
-		convResp, err := cli.GM.GetOrCreateConversation(&gmproto.GetOrCreateConversationRequest{
-			Numbers: app.NewContactNumbers([]string{req.PhoneNumber}),
-		})
-		if err != nil {
-			httpError(w, googleAPIErrorMessage("failed to get/create conversation", err), 502)
-			return
-		}
-		conv := convResp.GetConversation()
-		if conv == nil {
-			httpError(w, "no conversation returned", 502)
-			return
-		}
-
-		convoID := conv.GetConversationID()
-		name := req.PhoneNumber
-		// Try to get a name from participants
-		for _, p := range conv.GetParticipants() {
-			if !p.GetIsMe() {
-				if fn := p.GetFormattedNumber(); fn != "" {
-					name = fn
-				}
-				if cn := p.GetFullName(); cn != "" {
-					name = cn
-				}
-			}
-		}
-
-		// Upsert into local DB so it shows in the sidebar
-		store.UpsertConversation(&db.Conversation{
-			ConversationID: convoID,
-			Name:           name,
-			LastMessageTS:  time.Now().UnixMilli(),
-		})
-		publishConversations()
-
-		writeJSON(w, map[string]any{
-			"conversation_id": convoID,
-			"name":            name,
-		})
-	})
+	// NOTE: /api/new-conversation was removed. It created an empty Google
+	// Messages thread the moment you started a new chat. New conversations are
+	// now created only on the first SEND (POST /api/send with "to_number"), so
+	// the app never leaves empty rooms on the phone.
 
 	mux.HandleFunc("/api/mark-read", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
@@ -1565,35 +1561,6 @@ func APIHandlerWithOptions(store *db.Store, cli *client.Client, logger zerolog.L
 				"phase":   "idle",
 			})
 		}
-	})
-
-	mux.HandleFunc("/api/backfill/phone", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			httpError(w, "method not allowed", 405)
-			return
-		}
-		var req struct {
-			PhoneNumber string `json:"phone_number"`
-		}
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			httpError(w, "invalid JSON: "+err.Error(), 400)
-			return
-		}
-		if req.PhoneNumber == "" {
-			httpError(w, "phone_number is required", 400)
-			return
-		}
-		if opts.BackfillPhone == nil {
-			httpError(w, "phone backfill not available", 501)
-			return
-		}
-		if err := opts.BackfillPhone(req.PhoneNumber); err != nil {
-			httpError(w, googleAPIErrorMessage("backfill phone", err), 502)
-			return
-		}
-		publishConversations()
-		publishMessages("")
-		writeJSON(w, map[string]string{"status": "ok"})
 	})
 
 	mux.HandleFunc("/api/status", func(w http.ResponseWriter, r *http.Request) {

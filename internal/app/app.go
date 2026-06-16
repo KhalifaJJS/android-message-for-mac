@@ -149,6 +149,11 @@ type App struct {
 	// persistent failure can't loop.
 	resentMu sync.Mutex
 	resent   map[string]struct{}
+
+	// User-deleted conversations: block re-sync from resurrecting a thread the
+	// user just deleted (the server delete propagates with a short delay).
+	deletedMu    sync.Mutex
+	deletedConvs map[string]time.Time
 }
 
 type GoogleStatusSnapshot struct {
@@ -343,8 +348,9 @@ func (a *App) LoadAndConnect() error {
 			a.emitMessagesChange(conversationID)
 		},
 		OnTypingChange: a.OnTypingChange,
-		OnSettings:     a.SetSIMs,
-		OnSendFailed:   a.HandleSendFailure,
+		OnSettings:             a.SetSIMs,
+		OnSendFailed:           a.HandleSendFailure,
+		ShouldSkipConversation: a.WasRecentlyDeleted,
 		OnRealtimeGapRecovered: func(reason string) {
 			a.StartRecentReconcile(reason)
 		},

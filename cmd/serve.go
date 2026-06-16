@@ -406,10 +406,10 @@ func RunServe(logger zerolog.Logger, args ...string) error {
 				DownloadSignalMedia:   a.DownloadSignalMedia,
 				StartDeepBackfill:     a.StartDeepBackfill,
 				BackfillStatus:        func() any { return a.GetBackfillProgress() },
-				BackfillPhone:         a.BackfillConversationByPhone,
 				GetSIMs:               a.SIMList,
 				SelectSIM:             a.SelectSIM,
 				SyncContacts:          a.SyncGoogleContacts,
+				MarkDeleted:           a.MarkConversationDeleted,
 			})
 		} else {
 			mux := http.NewServeMux()

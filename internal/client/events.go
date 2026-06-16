@@ -43,6 +43,9 @@ type EventHandler struct {
 	// OnSendFailed fires when one of our outgoing messages comes back failed, so
 	// the app can resend as SMS/MMS on an RCS failure.
 	OnSendFailed func(conversationID, messageID, status, body string)
+	// ShouldSkipConversation lets the app suppress a conversation the user just
+	// deleted, so a re-sync racing the server-side delete can't resurrect it.
+	ShouldSkipConversation func(conversationID string) bool
 }
 
 func (h *EventHandler) Handle(rawEvt any) {
@@ -127,6 +130,9 @@ func (h *EventHandler) handleClientReady(evt *events.ClientReady) {
 
 func (h *EventHandler) handleMessage(evt *libgm.WrappedMessage) {
 	msg := evt.Message
+	if h.ShouldSkipConversation != nil && h.ShouldSkipConversation(msg.GetConversationID()) {
+		return // user just deleted this thread; don't resurrect it via re-sync
+	}
 	body := ExtractMessageBody(msg)
 	senderName, senderNumber := ExtractSenderInfo(msg)
 
@@ -203,6 +209,10 @@ func (h *EventHandler) handleMessage(evt *libgm.WrappedMessage) {
 }
 
 func (h *EventHandler) handleConversation(conv *gmproto.Conversation) {
+	if h.ShouldSkipConversation != nil && h.ShouldSkipConversation(conv.GetConversationID()) {
+		h.Logger.Debug().Str("conv_id", conv.GetConversationID()).Msg("Skipping re-sync of recently-deleted conversation")
+		return
+	}
 	if !h.storeConversation(conv) {
 		return
 	}
